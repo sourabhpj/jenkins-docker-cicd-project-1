@@ -37,22 +37,22 @@ Step 6 : Final Deployment
 * Run a new container on Port 80
 
 
-Technical Implementation & Commands
-1. Setting up Docker and Jenkins on AWS EC2
+# Technical Implementation & Commands
+**1. Setting up Docker and Jenkins on AWS EC2
 First, I updated the server and installed the necessary tools to run containers and automation.
-# Update the package list
+Update the package list**
 sudo apt update
 
-# Install Docker
+**2. Install Docker <br>
 sudo apt install docker.io -y
 
-# Provide Docker permissions to the current user
+** Provide Docker permissions to the current user
 sudo usermod -aG docker $USER && newgrp docker
 
-# Install Java (Required for Jenkins)
+** Install Java (Required for Jenkins)
 sudo apt install openjdk-17-jdk -y
 
-# Install Jenkins on Ubuntu
+ **Install Jenkins on Ubuntu**
 curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
 echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
 sudo apt update
@@ -60,20 +60,20 @@ sudo apt install jenkins -y
 
 3.** Manual Testing: Build & Push Image**
 ​Before automating the process, I manually verified that the image was building and pushing correctly.
-# Build the Docker image from Dockerfile
+**Build the Docker image from Dockerfile
 docker build -t my-app .
 
-# Tag the image for Docker Hub
+**Tag the image for Docker Hub
 docker tag my-app sourabhpj94/yumgit:latest
 
-# Push the image to the repository
+**Push the image to the repository
 docker push sourabhpj94/yumgit:latest
 
-4. **Automated Deployment via Jenkins Pipeline**
+4. **Automated Deployment via Jenkins Pipeline
 ​These commands were used inside the Jenkins Pipeline script to ensure a smooth deployment without conflicts.
-# Stop and remove the old container to free up Port 80
+ Stop and remove the old container to free up Port 80
 docker rm -f my-container || true
 
-# Run the new container using the latest image from Docker Hub
+** Run the new container using the latest image from Docker Hub
 docker run -d --name my-container -p 80:80 sourabhpj94/yumgit:latest
 
